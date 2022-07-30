@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../app";
+import db from "../../dbconfig";
 
 const userAdm = {
   name: "daniel",
@@ -25,6 +26,10 @@ const loginNotAdm = {
   password: "123456",
 };
 
+afterAll(async () => {
+  await db("users").del();
+});
+
 describe("Testes rota POST /users", () => {
   it("Testando criação de usuário com um corpo correto", async () => {
     const response = await request(app).post("/users").send(userAdm);
@@ -32,8 +37,8 @@ describe("Testes rota POST /users", () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("email");
-    expect(response.body).toHaveProperty("createdOn");
-    expect(response.body).toHaveProperty("updatedOn");
+    expect(response.body).toHaveProperty("created_at");
+    expect(response.body).toHaveProperty("updated_at");
     expect(response.body).toHaveProperty("uuid");
     expect(response.body).toHaveProperty("isAdm");
     expect(response.body).not.toHaveProperty("password");
@@ -108,8 +113,8 @@ describe("Testando rota GET /users/profile", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.body).toHaveProperty("uuid");
-    expect(response.body).toHaveProperty("createdOn");
-    expect(response.body).toHaveProperty("updatedOn");
+    expect(response.body).toHaveProperty("created_at");
+    expect(response.body).toHaveProperty("updated_at");
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("email");
     expect(response.body).toHaveProperty("isAdm");
