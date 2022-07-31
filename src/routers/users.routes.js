@@ -5,11 +5,13 @@ import {
   listUserController,
   userDeleteController,
   userProfileController,
+  userUpdateController,
 } from "../controllers/user.controllers";
 import userSchema from "../database/schemas/user.schema";
 import authenticationMiddleware from "../middlewares/authetication.middleware";
 import schemaCreateUserMiddleware from "../middlewares/schemaCreateUser.middleware";
 import userExist from "../middlewares/userExists.middleware";
+import userUpdateService from "../services/user/userUpdate.service";
 
 const userRouter = Router();
 
@@ -18,7 +20,6 @@ userRouter.post(
   schemaCreateUserMiddleware(userSchema),
   createUserController
 );
-console.log(authenticationMiddleware);
 userRouter.post("/login", createSessionController);
 userRouter.get("/users", authenticationMiddleware, listUserController);
 userRouter.get(
@@ -26,7 +27,7 @@ userRouter.get(
   authenticationMiddleware,
   userProfileController
 );
-userRouter.patch("/users/:id", authenticationMiddleware, userExist);
+userRouter.patch("/users/:id", authenticationMiddleware, userUpdateController);
 userRouter.delete(
   "/users/:id",
   authenticationMiddleware,

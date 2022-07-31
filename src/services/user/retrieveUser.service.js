@@ -4,7 +4,6 @@ const db = dbconfig;
 
 const retrieveUserService = async (userId) => {
   const userDb = (await db("users").where({ id: userId }))[0];
-  console.log(userDb);
 };
 
 export default retrieveUserService;

@@ -168,8 +168,8 @@ describe("Testando rota PATCH /users/<uuid>", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.body).toHaveProperty("uuid");
-    expect(response.body).toHaveProperty("createdOn");
-    expect(response.body).toHaveProperty("updatedOn");
+    expect(response.body).toHaveProperty("created_at");
+    expect(response.body).toHaveProperty("updated_at");
     expect(response.body).toHaveProperty("name", updateNotAdm.name);
     expect(response.body).toHaveProperty("email");
     expect(response.body).toHaveProperty("isAdm", user.body.isAdm);

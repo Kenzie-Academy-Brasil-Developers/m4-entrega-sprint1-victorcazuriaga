@@ -17,6 +17,7 @@ const authenticationMiddleware = (request, response, next) => {
         });
       }
       request.id = decoded.id;
+      request.uuid = decoded.uuid;
       request.email = decoded.email;
       request.isAdm = decoded.isAdm;
       next();

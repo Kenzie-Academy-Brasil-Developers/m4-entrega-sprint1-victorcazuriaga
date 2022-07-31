@@ -10,7 +10,6 @@ const createUserService = async (data) => {
     ...data,
     uuid: uuidv4(),
   });
-  console.log(newUser);
   return newUser;
 };
 
