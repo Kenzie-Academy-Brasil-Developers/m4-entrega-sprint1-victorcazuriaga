@@ -30,39 +30,20 @@ const retrieveUserController = (request, response) => {
 const userUpdateController = async (request, response) => {
   const userId = request.params; //uuid
   const userData = request.body;
-  const isAdm = request.isAdm;
-
-  if (isAdm) {
-    const [userUpdated] = await userUpdateService(userId.id, userData);
-    return response.status(200).json(userUpdated);
-  }
-  if (isAdm === 0 && userId.id === request.uuid) {
-    const [userUpdated] = await userUpdateService(request.uuid, userData);
-    return response.status(200).json(userUpdated);
-  }
-  return response.status(401).json({ message: "Usuário não autorizado" });
+  const [userUpdated] = await userUpdateService(userId.id, userData);
+  return response.status(200).json(userUpdated);
 };
 
 const userDeleteController = async (request, response) => {
   const userId = request.params; //uuid
-  const isAdm = request.isAdm;
-
-  if (isAdm) {
-    const userDeleted = await userDeleteService(userId.id);
-    return response
-      .status(200)
-      .json({ message: "Usuário Deletado com sucesso" });
-  }
-  if (isAdm === 0 && userId.id === request.uuid) {
-    const userDeleted = await userDeleteService(request.uuid);
-    return response.status(200).json(userDeleted);
-  }
-  return response.status(401).json({ message: "Usuário Deletado com sucesso" });
+  const userDeleted = await userDeleteService(userId.id);
+  return response.status(200).json({ message: "Usuário Deletado com sucesso" });
 };
 
 const userProfileController = async (request, response) => {
   const userId = request.id;
   const [{ password, ...userProfile }] = await userProfileService(userId);
+  console.log(userProfile);
   return response.status(200).json(userProfile);
 };
 

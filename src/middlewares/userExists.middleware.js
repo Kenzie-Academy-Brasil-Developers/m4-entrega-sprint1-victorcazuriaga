@@ -2,16 +2,16 @@ import dbconfig from "../../dbconfig";
 
 const db = dbconfig;
 
-const userExist = (request, response, next) => {
-  const { id } = request.params;
-  const userDb = db("users").where({ id: id });
-  if (userDb) {
-    request.user = user;
+const userExistMiddleware = async (request, response, next) => {
+  const uuid = request.params.id || request.uuid;
+  const userDb = await db("users").where({ uuid: uuid });
+  if (userDb.length === 1) {
     next();
+  } else {
+    return response.status(404).json({
+      message: "User not Found",
+    });
   }
-  return response.status(404).json({
-    message: "User not Found",
-  });
 };
 
-export default userExist;
+export default userExistMiddleware;

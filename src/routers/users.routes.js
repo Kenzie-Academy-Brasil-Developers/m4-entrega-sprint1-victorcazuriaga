@@ -8,10 +8,10 @@ import {
   userUpdateController,
 } from "../controllers/user.controllers";
 import userSchema from "../database/schemas/user.schema";
+import adminValidatedMiddleware from "../middlewares/adminValidated.middleware";
 import authenticationMiddleware from "../middlewares/authetication.middleware";
 import schemaCreateUserMiddleware from "../middlewares/schemaCreateUser.middleware";
-import userExist from "../middlewares/userExists.middleware";
-import userUpdateService from "../services/user/userUpdate.service";
+import userExistMiddleware from "../middlewares/userExists.middleware";
 
 const userRouter = Router();
 
@@ -25,13 +25,21 @@ userRouter.get("/users", authenticationMiddleware, listUserController);
 userRouter.get(
   "/users/profile",
   authenticationMiddleware,
+  userExistMiddleware,
   userProfileController
 );
-userRouter.patch("/users/:id", authenticationMiddleware, userUpdateController);
+userRouter.patch(
+  "/users/:id",
+  userExistMiddleware,
+  authenticationMiddleware,
+  adminValidatedMiddleware,
+  userUpdateController
+);
 userRouter.delete(
   "/users/:id",
+  userExistMiddleware,
   authenticationMiddleware,
-
+  adminValidatedMiddleware,
   userDeleteController
 );
 
